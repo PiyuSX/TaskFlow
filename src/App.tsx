@@ -1,8 +1,8 @@
-import { useEffect, useState, useCallback } from 'react'
-import './index.css'
-import { Todo, AlarmSound } from './types/Todo'
-import { TodoItem } from './components/TodoItem'
-import { TodoInput } from './components/TodoInput'
+import { useEffect, useState, useCallback } from 'react';
+import './index.css';
+import { Todo, AlarmSound } from './types/Todo';
+import { TodoItem } from './components/TodoItem';
+import { TodoInput } from './components/TodoInput';
 
 const DEFAULT_SOUNDS: AlarmSound[] = [
   { id: 'default', name: 'Default Bell', url: '/sounds/default.mp3' },
@@ -11,24 +11,18 @@ const DEFAULT_SOUNDS: AlarmSound[] = [
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>(() => {
-    const saved = localStorage.getItem('todos')
-    return saved ? JSON.parse(saved) : []
-  })
+    const saved = localStorage.getItem('todos');
+    return saved ? JSON.parse(saved) : [];
+  });
 
-  const [sounds, setSounds] = useState<AlarmSound[]>(() => {
-    const savedSounds = localStorage.getItem('sounds')
-    return savedSounds ? [...DEFAULT_SOUNDS, ...JSON.parse(savedSounds)] : DEFAULT_SOUNDS
-  })
-
-  useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todos))
-  }, [todos])
+  const [sounds] = useState<AlarmSound[]>(() => {
+    const savedSounds = localStorage.getItem('sounds');
+    return savedSounds ? [...DEFAULT_SOUNDS, ...JSON.parse(savedSounds)] : DEFAULT_SOUNDS;
+  });
 
   useEffect(() => {
-    localStorage.setItem('sounds', JSON.stringify(
-      sounds.filter(s => !DEFAULT_SOUNDS.find(d => d.id === s.id))
-    ))
-  }, [sounds])
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
 
   const checkReminders = useCallback(() => {
     const now = new Date();
@@ -72,18 +66,18 @@ function App() {
         reminder,
         alarmSound
       }
-    ])
-  }
+    ]);
+  };
 
   const toggleTodo = (id: string) => {
     setTodos(todos.map(todo =>
       todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    ))
-  }
+    ));
+  };
 
   const deleteTodo = (id: string) => {
-    setTodos(todos.filter(todo => todo.id !== id))
-  }
+    setTodos(todos.filter(todo => todo.id !== id));
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
@@ -120,7 +114,7 @@ function App() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
